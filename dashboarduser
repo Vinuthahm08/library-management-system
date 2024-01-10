@@ -1,0 +1,101 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import java.awt.EventQueue;
+
+public class dashboardu {
+
+    protected JFrame frame;
+    private JButton viewbooks;
+    private JButton staffdetails;
+    private JButton logout;
+    private JButton returnbooks;
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    dashboardu da = new dashboardu();
+                    da.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public dashboardu() {
+        initialize();
+    }
+
+    private void initialize() {
+        frame = new JFrame("dashboardu");
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+
+        JButton viewbooks = new JButton("VIEW BOOKS");
+        viewbooks.setBounds(55, 50, 315, 30);
+        frame.getContentPane().add(viewbooks);
+
+        JButton staffdetails = new JButton("STAFF DETAILS");
+        staffdetails.setBounds(55, 90, 315, 30);
+        frame.getContentPane().add(staffdetails);
+        
+      JButton returnbooks = new JButton("RETURNED BOOKS");
+      returnbooks.setBounds(55,130,315,30);
+      frame.getContentPane().add(returnbooks);
+        
+        JButton logout = new JButton("LOGOUT");
+        logout.setBounds(55, 170, 315, 30);
+        frame.getContentPane().add(logout);
+        // Define your font(s)
+
+Font font1 = new Font("Century Schoolbook", Font.BOLD, 17);
+
+// Apply the fonts to the respective components
+viewbooks.setFont(font1);
+staffdetails.setFont(font1);
+logout.setFont(font1);
+returnbooks.setFont(font1);
+
+        // Handling login button action
+        viewbooks.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your login logic here
+                viewbooks v = new viewbooks();
+                v.frame.setVisible(true);
+                frame.dispose();
+            }
+        });
+        logout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your logic for viewing selected books here
+                loginpageuser l = new loginpageuser();
+                l.frame.setVisible(true);
+               frame.dispose();
+            }
+        });
+         staffdetails.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your logic for viewing selected books here
+                staffdetails s = new staffdetails();
+                s.frame.setVisible(true);
+                frame.dispose();
+    }
+});
+     returnbooks.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your logic for viewing selected books here
+                returnedbooks r = new returnedbooks();
+                r.frame.setVisible(true);
+                frame.dispose();     
+    }
+});
+             }
+}
