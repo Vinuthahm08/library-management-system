@@ -1,0 +1,139 @@
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+
+import javax.swing.JButton;
+import java.awt.EventQueue;
+
+public class dashboardstaff {
+
+    protected JFrame frame;
+    private JButton issuedbooks;
+    private JButton addbooks;
+    private JButton removestaff;
+    private JButton logout;
+    private JButton addstaff;
+    private JButton retrunbooks;
+    
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    dashboardstaff da = new dashboardstaff();
+                    da.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public dashboardstaff() {
+        initialize();
+    }
+
+    private void initialize() {
+        frame = new JFrame("dashboardstaff");
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+        
+        JLabel user = new JLabel("STAFF");
+        user.setBounds(10, 10, 250, 15);
+        frame.getContentPane().add(user);
+      
+        JButton issuedbooks = new JButton("ISSUED BOOKS");
+        issuedbooks.setBounds(15, 50, 185, 30);
+        frame.getContentPane().add(issuedbooks);
+
+        JButton removestaff = new JButton("REMOVE STAFF");
+        removestaff.setBounds(230, 50, 185, 30);
+        frame.getContentPane().add(removestaff);
+        
+      JButton addstaff = new JButton("ADD STAFF");
+        addstaff.setBounds(15, 100, 185, 30);
+        frame.getContentPane().add(addstaff);
+      
+        
+        JButton addbooks = new JButton("ADD BOOKS");
+        addbooks.setBounds(230, 100, 185, 30);
+        frame.getContentPane().add(addbooks);
+        
+         JButton returnbooks = new JButton("RETURNED BOOKS");
+        returnbooks.setBounds(55, 150, 315, 30);
+        frame.getContentPane().add(returnbooks);
+        
+        JButton logout = new JButton("LOGOUT");
+        logout.setBounds(55, 200, 315, 30);
+        frame.getContentPane().add(logout);
+        
+        // Define your font(s)
+
+Font font1 = new Font("Century Schoolbook", Font.BOLD, 15);
+
+// Apply the fonts to the respective components
+issuedbooks.setFont(font1);
+removestaff.setFont(font1);
+addbooks.setFont(font1);
+addstaff.setFont(font1);
+logout.setFont(font1);
+returnbooks.setFont(font1);
+
+        // Handling login button action
+        issuedbooks.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your login logic here
+                selectedbooks s = new selectedbooks();
+                s.frame.setVisible(true);
+                frame.dispose();
+                
+               }
+        });
+         returnbooks.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your login logic here
+                returnbooksdisplay s = new returnbooksdisplay();
+                s.frame.setVisible(true);
+                frame.dispose();
+                
+               }
+        });
+        addbooks.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                addbooks1 a= new addbooks1();
+                a.frame.setVisible(true);
+                frame.dispose();
+                // Your logic for viewing selected books here
+            }
+        });
+         removestaff.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your logic for viewing selected books here
+                removestaff r= new removestaff();
+                r.frame.setVisible(true);
+                frame.dispose();
+                }
+});
+         logout.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your logic for viewing selected books here
+            loginpagestaff l = new loginpagestaff();
+            l.frame.setVisible(true);
+            frame.dispose();
+            }
+});
+               addstaff.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your logic for viewing selected books here
+            addstaff a = new addstaff();
+            a.frame.setVisible(true);
+            frame.dispose();
+            }
+});
+    }
+}
+
+
