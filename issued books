@@ -1,0 +1,119 @@
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.*;
+import javax.swing.*;
+import javax.swing.table.*;
+
+public class selectedbooks {
+   
+protected JFrame frame;
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    selectedbooks s = new selectedbooks();
+                    s.frame.setVisible(true);
+                }
+                catch (Exception ex) {
+                    System.out.println("SQLException caught: " + ex.getMessage());
+                }
+            }
+        });
+    }
+    public selectedbooks()
+    {
+        createAndShowGUI();
+    }
+
+    private JFrame createAndShowGUI() {
+        frame = new JFrame("selectedbooks");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Create and set up the table.
+        DefaultTableModel model = new DefaultTableModel();
+        JTable table = new JTable(model);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+        // Set up column names.
+        model.setColumnIdentifiers(new Object[]{"BOOK_ID", "CATEGORY", "NAME", "AUTHOR"});
+
+       
+
+        // Create a scroll pane.
+        JScrollPane scrollPane = new JScrollPane(table);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        // Create fetch and back buttons.
+        JButton fetchButton = new JButton("FETCH");
+        JButton backButton = new JButton("BACK");
+
+        // Create and add panel with buttons.
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(fetchButton);
+        buttonPanel.add(backButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+        // Define your font(s)
+Font font1 = new Font("Century Schoolbook", Font.BOLD, 15);
+Font font2 = new Font("Century Schoolbook", Font.BOLD, 17);
+
+// Apply the fonts to the respective components
+fetchButton.setFont(font1);
+backButton.setFont(font1);
+Font centurySchoolbook = new Font("Century Schoolbook", Font.BOLD, 14);
+table.getTableHeader().setFont(centurySchoolbook);
+
+        // Handle button clicks.
+        fetchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e1) {
+                // TODO: Fetch and update table.
+               
+String url="jdbc:mysql://localhost:3306/librarysys";
+String user="root";
+String pass="qwer@1234";
+String query ="select * from selectedbooksu";
+try
+{
+    Connection conn=DriverManager.getConnection(url,user,pass);
+    Statement stm=conn.createStatement();
+    ResultSet rs=stm.executeQuery(query);
+    while(rs.next())
+    {
+        String bookid=rs.getString("BOOK_ID");
+        String category=rs.getString("CATEGORY");
+        String name=rs.getString("NAME");
+        String author=rs.getString("AUTHOR");
+        model.addRow(new Object[] {bookid,category,name,author});
+}
+rs.close();
+stm.close();
+}
+catch(Exception e)
+{
+JOptionPane.showMessageDialog(frame,e.getMessage());
+}
+
+
+    
+
+    }             
+            
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Go back to the previous screen.
+                dashboardstaff d = new dashboardstaff();
+                d.frame.setVisible(true);
+                 frame.dispose();
+            }
+        });
+
+        // Display the frame.
+        frame.pack();
+        frame.setVisible(true);
+return frame;
+    }
+}
