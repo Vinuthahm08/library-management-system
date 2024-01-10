@@ -1,0 +1,149 @@
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import javax.swing.JButton;
+import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+ public class returnedbooks {
+  
+  protected JFrame frame;
+    private JButton addbutton,back;
+    private JLabel  bookid,category,name,author;
+    private JTextField book,c,n,a;
+    
+     public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    returnedbooks r = new returnedbooks();
+                    r.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+     
+      public returnedbooks() {
+        initialize();
+    }
+
+    private void initialize() {
+        frame = new JFrame("returnedbooks");
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+        
+        JLabel bookid = new JLabel("BOOK ID");
+        bookid.setBounds(40, 50, 80, 30);
+        frame.getContentPane().add(bookid);
+        
+        JLabel category  = new JLabel("CATEGORY");
+        category.setBounds(40,80, 80, 30);
+        frame.getContentPane().add(category);
+        
+        JLabel name = new JLabel("NAME");
+        name.setBounds(40, 110, 80, 30);
+        frame.getContentPane().add(name);
+        
+        JLabel author = new JLabel("AUHTOR");
+        author.setBounds(40, 140, 80, 30);
+        frame.getContentPane().add(author);
+        
+       
+        
+        JButton addbutton = new JButton("ADD");
+        addbutton.setBounds(115, 215, 75, 30);
+        frame.getContentPane().add(addbutton);
+        
+        JButton back = new JButton("BACK");
+        back.setBounds(255, 215, 75, 30);
+        frame.getContentPane().add(back);
+        
+        book = new JTextField();
+        book.setBounds(155, 50, 218, 30);
+        frame.getContentPane().add(book);
+        book.setColumns(10);
+         
+        c = new JTextField();
+        c.setBounds(155, 80, 218, 30);
+        frame.getContentPane().add(c);
+        c.setColumns(10);
+         
+        n = new JTextField();
+        n.setBounds(155, 110, 218, 30);
+        frame.getContentPane().add(n);
+        n.setColumns(10);
+         
+        a = new JTextField();
+        a.setBounds(155, 140, 218, 30);
+        frame.getContentPane().add(a);
+        a.setColumns(10);
+         
+       
+       
+        Font font1 = new Font("Century Schoolbook", Font.BOLD, 13);
+        Font font2=new Font("Century Schoolbook" , Font.BOLD,17);
+    bookid.setFont(font1);
+    category.setFont(font1);
+    name.setFont(font1);
+    author.setFont(font1);
+ 
+    addbutton.setFont(font1);
+    back.setFont(font1);
+    book.setFont(font2);
+    c.setFont(font2);
+    n.setFont(font2);
+    a.setFont(font2);
+    
+    
+     back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Go back to the previous screen.
+                dashboardu d = new dashboardu();
+                d.frame.setVisible(true);
+                 frame.dispose();
+            }
+        });
+     addbutton.addActionListener(new ActionListener(){
+         @Override
+         public void actionPerformed(ActionEvent e){
+              String url = "jdbc:mysql://localhost:3306/librarysys?useSSL=false";
+        String mysqluser="root";
+        String mysqlpwd="qwer@1234";
+        String query = "insert into returnedbooks1 values (?,?,?,?)";
+     
+       
+         try {
+        Connection conn = DriverManager.getConnection(url,mysqluser,mysqlpwd);
+        PreparedStatement pstmt = conn.prepareCall(query);
+        pstmt.setString(1, book.getText());
+        pstmt.setString(2, c.getText());
+        pstmt.setString(3, n.getText());
+        pstmt.setString(4, a.getText());
+        pstmt.execute();
+        JOptionPane.showMessageDialog(null,"One record added successfully");
+    } 
+         catch (Exception e1) {
+        JOptionPane.showMessageDialog(null,"Error in database");   
+    }
+
+                
+            
+            
+        
+
+         }
+     });
+
+    }
+ }
