@@ -1,0 +1,137 @@
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import javax.swing.JButton;
+import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+
+ public class removestaff {
+  
+  protected JFrame frame;
+    private JButton remove,back;
+    private JLabel  staffid,name,contact;
+    private JTextField s,c,n;
+    
+     public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    removestaff r = new removestaff();
+                    r.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+     
+      public removestaff() {
+        initialize();
+    }
+
+    private void initialize() {
+        frame = new JFrame("removestaff");
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+        
+        JLabel staffid = new JLabel("STAFF ID");
+        staffid.setBounds(40, 50, 80, 30);
+        frame.getContentPane().add(staffid);
+        
+        JLabel name = new JLabel("NAME");
+        name.setBounds(40, 90, 80, 30);
+        frame.getContentPane().add(name);
+        
+        JLabel contact = new JLabel("CONTACT");
+        contact.setBounds(40, 130, 80, 30);
+        frame.getContentPane().add(contact);
+        
+        JButton remove = new JButton("REMOVE");
+        remove.setBounds(85, 215, 125, 30);
+        frame.getContentPane().add(remove);
+        
+        JButton back = new JButton("BACK");
+        back.setBounds(255, 215, 125, 30);
+        frame.getContentPane().add(back);
+        
+        s = new JTextField();
+        s.setBounds(155, 50, 218, 30);
+        frame.getContentPane().add(s);
+        s.setColumns(10);
+         
+        c = new JTextField();
+        c.setBounds(155, 90, 218, 30);
+        frame.getContentPane().add(c);
+        c.setColumns(10);
+         
+        n = new JTextField();
+        n.setBounds(155, 130, 218, 30);
+        frame.getContentPane().add(n);
+        n.setColumns(10);
+         
+       
+       
+        Font font1 = new Font("Century Schoolbook", Font.BOLD, 13);
+        Font font2=new Font("Century Schoolbook" , Font.BOLD,17);
+    staffid.setFont(font1);
+  
+    name.setFont(font1);
+    contact.setFont(font1);
+    remove.setFont(font1);
+    back.setFont(font1);
+ 
+    c.setFont(font2);
+    n.setFont(font2);
+    s.setFont(font2);
+    
+    
+     back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: Go back to the previous screen.
+                dashboardstaff d = new dashboardstaff();
+                d.frame.setVisible(true);
+                 frame.dispose();
+            }
+        });
+     remove.addActionListener(new ActionListener(){
+         @Override
+         public void actionPerformed(ActionEvent e){
+              String url = "jdbc:mysql://localhost:3306/librarysys?useSSL=false";
+        String mysqluser="root";
+        String mysqlpwd="qwer@1234";
+         String staffId = s.getText(); // Get the staff ID from the text field
+
+                try {
+                    Connection conn = DriverManager.getConnection(url, mysqluser, mysqlpwd);
+                    conn.setAutoCommit(false); // Start a transaction
+
+                    // Remove the staff details from the 'staff' table
+                    String queryStaff = "delete from staff where staff_id = ?";
+                    PreparedStatement pstmtStaff = conn.prepareStatement(queryStaff);
+                    pstmtStaff.setString(1, staffId);
+                    pstmtStaff.executeUpdate();
+
+                    conn.commit(); // Commit the transaction
+                    JOptionPane.showMessageDialog(frame, "Staff details deleted successfully!");
+
+                    pstmtStaff.close();
+                    conn.close();
+
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(frame, "SQLException caught: " + ex.getMessage());
+                }
+         }
+     });
+
+    }
+ }
