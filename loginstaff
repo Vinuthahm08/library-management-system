@@ -1,0 +1,131 @@
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import java.awt.EventQueue;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
+public class loginpagestaff {
+
+    protected JFrame frame;
+    private JTextField txtEmail;
+    private JPasswordField txtPassword;
+    private JButton btnLogin;
+    private JLabel staffn;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    loginpagestaff l = new loginpagestaff();
+                    l.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public loginpagestaff() {
+        initialize();
+    }
+
+    private void initialize() {
+        frame = new JFrame("loginpagestaff");
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+ JLabel staffn = new JLabel("STAFF");
+        staffn.setBounds(193, 21, 57, 14);
+        frame.getContentPane().add(staffn);
+        JLabel lblEmail = new JLabel("EMAIL");
+        lblEmail.setBounds(83, 81, 46, 14);
+        frame.getContentPane().add(lblEmail);
+
+        txtEmail = new JTextField();
+        txtEmail.setBounds(155, 78, 218, 30);
+        frame.getContentPane().add(txtEmail);
+        txtEmail.setColumns(10);
+
+        JLabel lblPassword = new JLabel("PASSWORD");
+        lblPassword.setBounds(83, 113, 68, 17);
+        frame.getContentPane().add(lblPassword);
+
+        txtPassword = new JPasswordField();
+        txtPassword.setBounds(155, 110, 218, 30);
+        frame.getContentPane().add(txtPassword);
+
+        btnLogin = new JButton("LOGIN");
+        btnLogin.setBounds(155, 155, 100, 50);
+        frame.getContentPane().add(btnLogin);
+        // Define your font(s)
+Font font1 = new Font("Century Schoolbook", Font.BOLD, 11);
+Font font2 = new Font("Century Schoolbook", Font.BOLD, 17);
+Font font3=new Font("Century Schoolbook" , Font.ITALIC,17);
+
+// Apply the fonts to the respective components
+lblEmail.setFont(font1);
+lblPassword.setFont(font1);
+btnLogin.setFont(font2);
+staffn.setFont(font3);
+
+        // Handling login button action
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // Your login logic here
+                String url = "jdbc:mysql://localhost:3306/librarysys?useSSL=false";
+        String mysqluser="root";
+        String mysqlpwd="qwer@1234";
+        String pswrd=new String(txtPassword.getPassword());
+        String email=txtEmail.getText();
+        String query=("select pass from signupstaff1 where emailid='"+email+"';");
+        try{
+            Connection conn = DriverManager.getConnection(url,mysqluser,mysqlpwd);
+            Statement stm=conn.createStatement();
+            ResultSet rs=stm.executeQuery(query);
+            if(rs.next())
+            {
+                String realpswrd=rs.getString("pass");
+                if(realpswrd.equals(pswrd))
+                {
+                
+        dashboardstaff obj=new dashboardstaff();
+obj.frame.setVisible(true);
+frame.dispose();
+                }
+            
+                else
+                {
+                    JOptionPane.showMessageDialog(null," password entered is wrong");
+                    
+                }
+            }
+            else
+                {
+                      JOptionPane.showMessageDialog(null,"username is wrong");
+                        
+                        }
+ rs.close();
+            stm.close();
+            conn.close();
+        }
+            
+                catch(Exception e)
+                        {
+                          JOptionPane.showMessageDialog(null,"error occured from databse");
+                        }
+            
+            }
+        });
+    }
+}
+
