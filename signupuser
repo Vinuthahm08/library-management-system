@@ -1,0 +1,145 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Font;
+import java.awt.*;
+import javax.swing.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class SignUpPage {
+
+    protected JFrame frame;
+   
+    private JTextField txtFirstName;
+    private JTextField txtLastName;
+    private JTextField txtEmail;
+    private JPasswordField txtPassword;
+    private JButton btnSignUp;
+    private JLabel lblAlreadyHaveAccount;
+    public JButton btnLogin;
+    private JLabel usern;
+     
+
+    public static void main(String[] args) {
+        SignUpPage window = new SignUpPage();
+        window.frame.setVisible(true);
+    }
+
+    public SignUpPage() {
+        initialize();
+        
+    }
+
+    private void initialize() {
+        frame = new JFrame("SignUpPage");
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+        
+        JLabel usern = new JLabel("USER");
+        usern.setBounds(193, 11, 57, 14);
+        frame.getContentPane().add(usern);
+
+        JLabel lblFirstName = new JLabel("FISRT NAME");
+        lblFirstName.setBounds(53, 61, 77, 14);
+        frame.getContentPane().add(lblFirstName);
+
+        JLabel lblLastName = new JLabel("LAST NAME");
+        lblLastName.setBounds(53, 92, 77, 14);
+        frame.getContentPane().add(lblLastName);
+
+        JLabel lblEmail = new JLabel("EMAIL");
+        lblEmail.setBounds(53, 123, 46, 14);
+        frame.getContentPane().add(lblEmail);
+
+        JLabel lblPassword = new JLabel("PASSWORD");
+        lblPassword.setBounds(53, 154, 77, 14);
+        frame.getContentPane().add(lblPassword);
+
+        txtFirstName = new JTextField();
+        txtFirstName.setBounds(155, 58, 182, 20);
+        frame.getContentPane().add(txtFirstName);
+        txtFirstName.setColumns(10);
+
+        txtLastName = new JTextField();
+        txtLastName.setBounds(155, 92, 182, 20);
+        frame.getContentPane().add(txtLastName);
+        txtLastName.setColumns(10);
+
+        txtEmail = new JTextField();
+        txtEmail.setBounds(155, 120, 182, 20);
+        frame.getContentPane().add(txtEmail);
+        txtEmail.setColumns(10);
+
+        txtPassword = new JPasswordField();
+        txtPassword.setBounds(155, 151, 182, 20);
+        frame.getContentPane().add(txtPassword);
+
+        btnSignUp = new JButton("SIGN UP");
+        btnSignUp.setBounds(172, 191, 100, 23);
+        frame.getContentPane().add(btnSignUp);
+
+        lblAlreadyHaveAccount = new JLabel("Already have an account?");
+        lblAlreadyHaveAccount.setBounds(155, 224, 161, 20);
+        frame.getContentPane().add(lblAlreadyHaveAccount);
+        btnLogin = new JButton("LOGIN");
+        btnLogin.setBounds(310, 224, 89, 20);
+        frame.getContentPane().add(btnLogin);
+              // Define your font(s)
+Font font1 = new Font("Century Schoolbook", Font.BOLD, 11);
+Font font2 = new Font("Century Schoolbook", Font.BOLD, 14);
+Font font3 = new Font("Century Schoolbook", Font.BOLD, 13);
+Font font4=new Font("Century Schoolbook" , Font.ITALIC,15);
+// Apply the fonts to the respective components
+lblEmail.setFont(font1);
+lblPassword.setFont(font1);
+btnLogin.setFont(font2);
+btnSignUp.setFont(font3);
+lblAlreadyHaveAccount .setFont(font1);
+   txtFirstName.setFont(font1);
+      txtLastName.setFont(font1);
+      usern.setFont(font4);
+
+   // Add functionality to the buttons
+btnSignUp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                 saveDetailsToDatabase();
+                // sign up code goes here
+                // assuming that txtFirstName, txtLastName, txtEmail, and txtPassword contain valid inputs
+                dashboardu d = new dashboardu();
+                d.frame.setVisible(true);
+                frame.dispose();
+            }
+        });
+
+btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                // code to go to login page goes here
+                loginpageuser l = new loginpageuser();
+                l.frame.setVisible(true); // show the login page
+                frame.setVisible(false); // hide the sign up page
+            }
+        });
+    }
+    private void saveDetailsToDatabase() {
+    String connectionUrl = "jdbc:mysql://localhost:3306/librarysys";
+    String dbUser = "root";
+    String dbPassword = "qwer@1234";
+
+    try (Connection conn = DriverManager.getConnection(connectionUrl, dbUser, dbPassword);
+         PreparedStatement pstmt = conn.prepareStatement("INSERT INTO signup (firstName, lastName, email, password) VALUES (?, ?, ?, ?)")) {
+        
+        pstmt.setString(1, txtFirstName.getText());
+        pstmt.setString(2, txtLastName.getText());
+        pstmt.setString(3, txtEmail.getText());
+        pstmt.setString(4, new String(txtPassword.getPassword()));
+        
+        pstmt.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println("Error occurred while saving data to database: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+}
